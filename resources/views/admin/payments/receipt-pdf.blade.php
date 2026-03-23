@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Receipt</title>
+    <style>
+        body { font-family: sans-serif; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #000; padding: 6px; }
+        th { background: #f2f2f2; }
+        .right { text-align: right; }
+        .no-border { border: none; }
+    </style>
+</head>
+<body>
+
+<h2>Payment Receipt</h2>
+
+<p>
+    <strong>Receipt No:</strong> {{ $payment->receipt_no }}<br>
+    <strong>Date:</strong> {{ $payment->payment_date->format('d-m-Y') }}
+</p>
+
+<hr>
+
+<p>
+    <strong>Client:</strong><br>
+    {{ $payment->invoice->client->company_name }}<br>
+    GSTIN: {{ $payment->invoice->client->gstin ?? 'Unregistered' }}
+</p>
+
+<p>
+    <strong>Invoice No:</strong> {{ $payment->invoice->invoice_no }}
+</p>
+
+<table>
+    <tr>
+        <th>Payment Method</th>
+        <th class="right">Amount Paid</th>
+    </tr>
+    <tr>
+        <td>{{ ucfirst($payment->payment_method) }}</td>
+        <td class="right">{{ number_format($payment->amount, 2) }}</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <td class="no-border right"><strong>Invoice Total:</strong></td>
+        <td class="right">{{ number_format($payment->invoice->grand_total, 2) }}</td>
+    </tr>
+    <tr>
+        <td class="no-border right"><strong>Total Paid:</strong></td>
+        <td class="right">{{ number_format($payment->invoice->payments()->sum('amount'), 2) }}</td>
+    </tr>
+    <tr>
+        <td class="no-border right"><strong>Credit Notes:</strong></td>
+        <td class="right">
+            {{ number_format(
+                $payment->invoice->creditNotes()->where('status','active')->sum('grand_total'),
+                2
+            ) }}
+        </td>
+    </tr>
+    <tr>
+        <td class="no-border right"><strong>Balance Due:</strong></td>
+        <td class="right"><strong>{{ number_format($payment->invoice->due_amount, 2) }}</strong></td>
+    </tr>
+</table>
+
+<p style="margin-top:30px;">
+    Generated on {{ now()->format('d-m-Y H:i') }}
+</p>
+
+</body>
+</html>
