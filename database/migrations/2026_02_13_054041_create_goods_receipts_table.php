@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('purchase_order_id')
                 ->constrained();
 
-            $table->unsignedBigInteger('vendor_id')->nullable()->after('purchase_order_id');
+            $table->unsignedBigInteger('vendor_id')->nullable();
 
             $table->date('receipt_date');
 

@@ -80,4 +80,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class, 'task_user');
     }
 
+    public function inventoryVendor()
+    {
+        return $this->hasOne(\App\Models\InventoryVendor::class);
+    }
+
 }

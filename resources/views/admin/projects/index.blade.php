@@ -121,6 +121,7 @@
             <th>Project Status</th>
             <th>Progress</th>
             <th>Assigned Staff</th>
+            <th>Action</th>
         </tr>
     </thead>
 
@@ -204,6 +205,9 @@
                 @empty
                     <span class="text-muted">Not Assigned</span>
                 @endforelse
+            </td>
+            <td>
+                <a class="btn" href="{{ route('admin.projects.comments', $project->id) }}">Comments</a>
             </td>
         </tr>
     @empty

@@ -64,7 +64,7 @@
     </tr>
     <tr>
         <td class="no-border right"><strong>Balance Due:</strong></td>
-        <td class="right"><strong>{{ number_format($payment->invoice->due_amount, 2) }}</strong></td>
+        <td class="right"><strong>{{ number_format($payment->due_amount, 2) }}</strong></td>
     </tr>
 </table>
 

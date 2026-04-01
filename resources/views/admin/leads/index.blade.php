@@ -82,17 +82,6 @@
             @endforeach
         </select>
 
-        {{-- PROJECT TYPE --}}
-        <select name="project_type_id" class="select" onchange="this.form.submit()">
-            <option value="">All Types</option>
-            @foreach($types as $type)
-                <option value="{{ $type->id }}"
-                    {{ request('project_type_id') == $type->id ? 'selected' : '' }}>
-                    {{ $type->name }}
-                </option>
-            @endforeach
-        </select>
-
         {{-- ASSIGNED STAFF --}}
         <select name="staff_id" class="select" onchange="this.form.submit()">
             <option value="">All Staff</option>
@@ -113,10 +102,10 @@
             <tr>
                 <th>Lead ID</th>
                 <th>Name</th>
-                <th>Contact</th>
+                <th>Email</th>
+                <th>Phone</th>
                 <th>Source</th>
                 <th>Status</th>
-                <th>Project Type</th>
                 <th>Assigned Staff</th>
                 <th>Follow Up</th>
             </tr>
@@ -166,10 +155,10 @@
                                 <button class="toggle_table"><img src="{{ asset('images/chevron-down.svg') }}" alt="Toggle"></button>
 
                 </td>
-                <td>{{ $lead->contact_details }}</td>
+                <td>{{ $lead->email }}</td>
+                <td>{{ $lead->phone }}</td>
                 <td>{{ $lead->leadsource->name ?? '-' }}</td>
                 <td>{{ $lead->leadstatus->name ?? '-' }}</td>
-                <td>{{ $lead->type->name ?? '-' }}</td>
                 <td>{{ $lead->staff->user->name ?? '-' }} ({{ $lead->staff->staff_id ?? '' }})</td>
                 <td>{{ $lead->follow_up_date ? \Carbon\Carbon::parse($lead->follow_up_date)->format('d M Y, h:i A') : '-' }}</td>
             </tr>

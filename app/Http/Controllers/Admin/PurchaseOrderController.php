@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
-use App\Models\Vendor;
+use App\Models\InventoryVendor;
 use App\Models\InventoryItem;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +26,7 @@ class PurchaseOrderController extends Controller
     =============================== */
     public function create()
     {
-        $vendors = Vendor::all();
+        $vendors = InventoryVendor::all();
         return view('admin.purchase-orders.create', compact('vendors'));
     }
 
@@ -55,7 +55,7 @@ class PurchaseOrderController extends Controller
 
         DB::transaction(function () use ($request) {
 
-            $vendor = Vendor::findOrFail($request->vendor_id);
+            $vendor = InventoryVendor::findOrFail($request->vendor_id);
 
             //$companyState = config('app.company_state'); // set in config/app.php
             $companyState = setting('company_state');

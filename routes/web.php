@@ -38,6 +38,14 @@ use App\Http\Controllers\Admin\FinancialReportController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\InventoryVendorController;
 use App\Http\Controllers\Admin\InventoryVendorCategoryController;
+use App\Http\Controllers\Client\ClientDashboardController;
+use App\Http\Controllers\Vendor\VendorDashboardController;
+use App\Http\Controllers\Vendor\ProjectCommentController;
+use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
+use App\Http\Controllers\Client\DocumentController as ClientDocumentController;
+use App\Http\Controllers\Admin\ProjectCommentController as AdminProjectCommentController;
+use App\Http\Controllers\Client\ProjectCommentController as ClientProjectCommentController;
+use App\Http\Controllers\Admin\ServiceInvoiceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,14 +65,120 @@ Route::middleware('auth')->group(function () {
             ->name('admin.dashboard');
     });
 
+    Route::middleware('role:vendor')->group(function () {
+        Route::get('/vendor/dashboard', [VendorDashboardController::class, 'dashboard'])
+            ->name('vendor.dashboard');
+        
+        Route::get('/vendor/projects', [VendorDashboardController::class, 'projects'])
+        ->name('vendor.projects');
+
+        Route::get('/vendor/invoices', [VendorDashboardController::class, 'invoices'])
+        ->name('vendor.invoices');
+
+        Route::get('projects/{id}/comments', [ProjectCommentController::class, 'index'])
+        ->name('vendor.project.comments');
+
+        Route::post('projects/comments/store', [ProjectCommentController::class, 'store'])
+            ->name('vendor.project.comments.store');
+
+        Route::post('projects/comments/update/{id}', [ProjectCommentController::class, 'update'])
+            ->name('vendor.project.comments.update');
+
+        Route::get('projects/comments/delete/{id}', [ProjectCommentController::class, 'destroy'])
+            ->name('vendor.project.comments.delete');
+
+        Route::get('projects/comments/image/delete/{id}', [ProjectCommentController::class, 'deleteImage'])
+            ->name('vendor.comment.image.delete');
+
+
+        // Route::get('vendor/invoice/{id}/receipts', [VendorDashboardController::class, 'showReceipts'])
+        // ->name('vendor.invoice.receipts');
+
+        // Route::get('vendor/invoice/{invoice}/download', [VendorDashboardController::class, 'pdf'])
+        // ->name('vendor.invoice.pdf');
+
+        // Route::get('vendor/receipt/{payment}/download', [VendorDashboardController::class, 'downloadReceipt'])
+        // ->name('vendor.receipt.download');
+    });
+
     Route::middleware('role:client')->group(function () {
-        Route::get('/client/dashboard', [ClientController::class, 'dashboard'])
+        Route::get('/client/dashboard', [ClientDashboardController::class, 'dashboard'])
             ->name('client.dashboard');
+        
+        Route::get('/client/projects', [ClientDashboardController::class, 'projects'])
+        ->name('client.projects');
+
+        Route::get('/client/invoices', [ClientDashboardController::class, 'invoices'])
+        ->name('client.invoices');
+
+        Route::get('client/invoice/{id}/receipts', [ClientDashboardController::class, 'showReceipts'])
+        ->name('client.invoice.receipts');
+
+        Route::get('client/invoice/{invoice}/download', [ClientDashboardController::class, 'pdf'])
+        ->name('client.invoice.pdf');
+
+        Route::get('client/receipt/{payment}/download', [ClientDashboardController::class, 'downloadReceipt'])
+        ->name('client.receipt.download');
+
+        Route::get('client/documents', [ClientDocumentController::class,'index'])->name('client.documents.index');
+        Route::get('client/documents/{id}', [ClientDocumentController::class,'show'])->name('client.documents.show');
+        Route::post('client/documents/{id}/sign', [ClientDocumentController::class,'sign'])->name('client.documents.sign');
+
+        Route::get('client/projects/{id}/comments', [ClientProjectCommentController::class, 'show'])
+            ->name('client.projects.comments');
+
+        Route::post('client/projects/comments/store', [ClientProjectCommentController::class, 'store'])
+            ->name('client.projects.comments.store');
+
+        Route::post('client/projects/comments/{id}/update', [ClientProjectCommentController::class, 'update'])
+            ->name('client.projects.comments.update');
+
+        Route::get('client/projects/comments/{id}/delete', [ClientProjectCommentController::class, 'destroy'])
+            ->name('client.projects.comments.delete');
+
+        Route::get('client/projects/comments/image/delete/{id}', [ClientProjectCommentController::class, 'deleteImage'])
+            ->name('client.projects.comments.image.delete');
     });
 
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('documents', [AdminDocumentController::class,'index'])->name('documents.index');
+    Route::get('documents/create', [AdminDocumentController::class,'create'])->name('documents.create');
+    Route::post('documents/store', [AdminDocumentController::class,'store'])->name('documents.store');
+    Route::get('documents/signed', [AdminDocumentController::class,'signedIndex'])->name('documents.signed');
+
+    Route::get('documents/{id}/edit', [AdminDocumentController::class,'edit'])->name('documents.edit');
+    Route::post('documents/{id}/update', [AdminDocumentController::class,'update'])->name('documents.update');
+
+    // Project comments
+    Route::get('projects/{id}/comments', [AdminProjectCommentController::class, 'show'])
+        ->name('projects.comments');
+
+    Route::post('projects/comments/store', [AdminProjectCommentController::class, 'store'])
+        ->name('projects.comments.store');
+
+    Route::post('projects/comments/{id}/update', [AdminProjectCommentController::class, 'update'])
+        ->name('projects.comments.update');
+
+    Route::get('projects/comments/{id}/delete', [AdminProjectCommentController::class, 'destroy'])
+            ->name('projects.comments.delete');
+    
+    Route::get('projects/comments/image/delete/{id}', [AdminProjectCommentController::class, 'deleteImage'])
+            ->name('projects.comments.image.delete');
+
+    Route::resource('service-invoices', ServiceInvoiceController::class);
+    Route::get('service-invoices/{serviceInvoice}/edit', [ServiceInvoiceController::class,'edit'])->name('service-invoices.edit');
+    Route::put('service-invoices/{serviceInvoice}', [ServiceInvoiceController::class,'update'])->name('service-invoices.update');
+    Route::get('service-invoices/{serviceInvoice}/pdf', [ServiceInvoiceController::class,'pdf'])->name('service-invoices.pdf');
+    Route::post('service-invoices/{serviceInvoice}/finalize', [ServiceInvoiceController::class, 'finalize'])->name('service-invoices.finalize');
+    Route::post('service-invoices/{serviceInvoice}/payment',[PaymentController::class,'storeService'])->name('service-invoices.payment');
+    Route::get('service-invoices/{serviceInvoice}/ledger',[ServiceInvoiceController::class, 'ledger'])->name('service-invoices.ledger');
+    Route::post('service-invoices/{serviceInvoice}/cancel',[ServiceInvoiceController::class, 'cancel'])->name('service-invoices.cancel');
+
+    Route::get('service-payments/{payment}/receipt',[PaymentController::class, 'downloadReceipt'])->name('service-payments.receipt');
+
 
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
@@ -199,7 +313,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('inventory-vendors/{user}', [InventoryVendorController::class, 'destroy'])->name('inventory-vendors.destroy');
     Route::get('inventory-vendors/trash', [InventoryVendorController::class, 'trash'])->name('inventory-vendors.trash');
     Route::post('inventory-vendors/{id}/restore', [InventoryVendorController::class, 'restore'])->name('inventory-vendors.restore');
-    Route::get('inventory-vendors/{id}/force', [InventoryVendorController::class, 'force'])->name('inventory-vendors.force');
+    Route::delete('inventory-vendors/{id}/force', [InventoryVendorController::class, 'force'])->name('inventory-vendors.force');
     Route::get('/inventory-vendors/{user}', [InventoryVendorController::class, 'show'])->name('inventory-vendors.show');
 
     /* PROJECT TYPES */

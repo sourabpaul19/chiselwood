@@ -44,10 +44,6 @@ class LeadController extends Controller
             $query->where('lead_source_id', $request->lead_source_id);
         }
 
-        if ($request->filled('project_type_id')) {
-            $query->where('project_type_id', $request->project_type_id);
-        }
-
         if ($request->filled('staff_id')) {
             $query->where('staff_id', $request->staff_id);
         }
@@ -77,7 +73,6 @@ class LeadController extends Controller
 
         return view('admin.leads.index', [
             'leads'     => $leads,
-            'types'        => ProjectType::where('status', 'active')->get(),
             'leadStatuses' => LeadStatus::where('status', 'active')->get(),
             'leadSources'  => LeadSource::where('status', 'active')->get(),
             'staffs'       => Staff::with('user')->where('status', 'active')->get(),
@@ -93,7 +88,6 @@ class LeadController extends Controller
         return view('admin.leads.create', [
             'sources'  => LeadSource::where('status',1)->get(),
             'statuses' => LeadStatus::where('status',1)->get(),
-            'projects' => ProjectType::where('status',1)->get(),
             'staffs'   => Staff::where('status',1)->get(),
         ]);
     }
@@ -105,19 +99,19 @@ class LeadController extends Controller
     {
         $request->validate([
             'name'            => 'required|string|max:255',
-            'contact_details' => 'required|string|max:255',
+            'email'           => 'nullable|email|max:255',
+            'phone'           => 'nullable|string|max:20',
             'lead_source_id'  => 'required|exists:lead_sources,id',
-            'project_type_id' => 'required|exists:project_types,id',
             'lead_status_id'  => 'required|exists:lead_statuses,id',
         ]);
 
         $lead = Lead::create([
             'name'               => $request->name,
-            'contact_details'    => $request->contact_details,
+            'email'              => $request->email,
+            'phone'              => $request->phone,
             'lead_source_id'     => $request->lead_source_id,
             'inquiry_date'       => $request->inquiry_date,
             'budget_expectation' => $request->budget_expectation,
-            'project_type_id'    => $request->project_type_id,
             'lead_status_id'     => $request->lead_status_id,
             'notes'              => $request->notes,
             'follow_up_date'     => $request->follow_up_date,
@@ -143,7 +137,6 @@ class LeadController extends Controller
             'lead'     => $lead,
             'sources'  => LeadSource::where('status',1)->get(),
             'statuses' => LeadStatus::where('status',1)->get(),
-            'projects' => ProjectType::where('status',1)->get(),
             'staffs'   => Staff::where('status',1)->get(),
         ]);
     }
@@ -155,19 +148,19 @@ class LeadController extends Controller
     {
         $request->validate([
             'name'            => 'required|string|max:255',
-            'contact_details' => 'required|string|max:255',
+            'email'           => 'nullable|email|max:255',
+            'phone'           => 'nullable|string|max:20',
             'lead_source_id'  => 'required|exists:lead_sources,id',
-            'project_type_id' => 'required|exists:project_types,id',
             'lead_status_id'  => 'required|exists:lead_statuses,id',
         ]);
 
         $lead->update([
             'name'               => $request->name,
-            'contact_details'    => $request->contact_details,
+            'email'              => $request->email,
+            'phone'              => $request->phone,
             'lead_source_id'     => $request->lead_source_id,
             'inquiry_date'       => $request->inquiry_date,
             'budget_expectation' => $request->budget_expectation,
-            'project_type_id'    => $request->project_type_id,
             'lead_status_id'     => $request->lead_status_id,
             'notes'              => $request->notes,
             'follow_up_date'     => $request->follow_up_date,

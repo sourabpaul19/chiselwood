@@ -41,7 +41,6 @@
             <th>Invoice Status</th>
             <th>Payment Status</th>
             <th>Action</th>
-            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -63,9 +62,7 @@
 </td>
 <td>{{ ucfirst($invoice->payment_status) }}</td>
 <td>
-<a href="{{ route('admin.invoices.show',$invoice) }}">View</a>
-</td>
-<td>
+<a href="{{ route('admin.invoices.show',$invoice) }}" class="btn">View</a>
     
     @if(!$invoice->is_final)
     <a href="{{ route('admin.invoices.edit', $invoice->id) }}"

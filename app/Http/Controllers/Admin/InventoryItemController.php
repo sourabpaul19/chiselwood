@@ -9,7 +9,8 @@ use App\Models\InventoryUnit;
 use App\Models\InventoryBrand;
 use App\Models\InventoryBatch;
 use App\Models\StockTransaction;
-use App\Models\Vendor;
+//use App\Models\Vendor;
+use App\Models\InventoryVendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\FifoBatch;
@@ -65,7 +66,7 @@ class InventoryItemController extends Controller
         $brands = InventoryBrand::where('status','active')->get();
         $categories = InventoryCategory::whereNull('parent_id')->get();
         $subCategories = InventoryCategory::whereNotNull('parent_id')->get();
-        $vendors = Vendor::all();
+        $vendors = InventoryVendor::all();
 
         return view('admin.inventory-items.index', compact(
             'items',
@@ -112,7 +113,7 @@ class InventoryItemController extends Controller
             'subCategories' => InventoryCategory::whereNotNull('parent_id')
                                     ->where('status', 'active')
                                     ->get(),
-                                    'vendors' => Vendor::all(),
+                                    'vendors' => InventoryVendor::all(),
         ]);
     }
     public function store(Request $request)
@@ -122,7 +123,7 @@ class InventoryItemController extends Controller
             'name'               => 'required|string|max:255',
             'sku'                => 'required|string|max:100|unique:inventory_items,sku',
             'unit_id'            => 'required|exists:inventory_units,id',
-            'vendor_id'          => 'nullable|exists:vendors,id',
+            'vendor_id'          => 'nullable|exists:inventory_vendors,id',
 
             'category_ids'       => 'required|array|min:1',
             'category_ids.*'     => 'exists:inventory_categories,id',
@@ -267,7 +268,7 @@ class InventoryItemController extends Controller
 
         $categories = InventoryCategory::whereNull('parent_id')->get();
 
-        $vendors = Vendor::all();
+        $vendors = InventoryVendor::all();
 
         // load already attached relations
         $inventoryItem->load(['categories:id', 'subCategories:id']);
@@ -367,7 +368,7 @@ class InventoryItemController extends Controller
             'unit_id'            => 'required|exists:inventory_units,id',
             'brand_id'           => 'required|exists:inventory_brands,id',
 
-            'vendor_id'          => 'nullable|integer|exists:vendors,id',
+            'vendor_id'          => 'nullable|integer|exists:inventory_vendors,id',
 
             'category_ids'       => 'required|array|min:1',
             'category_ids.*'     => 'exists:inventory_categories,id',

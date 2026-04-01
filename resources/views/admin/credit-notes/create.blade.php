@@ -20,8 +20,7 @@
     <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
     <input type="hidden" name="client_id" value="{{ $invoice->client_id }}">
 
-    <div class="card-body">
-        <table class="table table-bordered">
+        <table class="data_table">
             <thead>
                 <tr>
                     <th></th>
@@ -97,10 +96,9 @@
             <label>Reason <span class="text-danger">*</span></label>
             <textarea name="reason" class="form-control" required></textarea>
         </div>
-    </div>
 
     <div class="card-footer text-end">
-        <button type="submit" class="btn btn-danger">Issue Credit Note</button>
+        <button type="submit" class="btn btn-theme">Issue Credit Note</button>
     </div>
 </form>
 

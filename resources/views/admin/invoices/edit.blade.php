@@ -2,36 +2,51 @@
 
 @section('content')
 
-<div class="card">
-    <div class="card-header">
+<div class="section_header">
+    <div class="d-flex align-items-center mb-2 justify-content-between">
         <h4>Edit Invoice - {{ $invoice->invoice_no }}</h4>
     </div>
-
-    <form action="{{ route('admin.invoices.update', $invoice->id) }}" method="POST">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.invoices.index') }}">Invoices</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Invoice - {{ $invoice->invoice_no }}</li>
+        </ol>
+    </nav>
+</div>
+<form action="{{ route('admin.invoices.update', $invoice->id) }}" method="POST">
         @csrf
         @method('PUT')
+<div class="postbox">
+    <div class="postbox_header">
+        <h3>Edit Invoice - {{ $invoice->invoice_no }}</h3>
+    </div>
 
-        <div class="card-body">
+    
+
+        <div class="postbox_body">
 
             {{-- CLIENT --}}
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label">Client</label>
-                    <select name="client_id" id="client_id" class="form-control" required>
-                        <option value="">Select Client</option>
-                        @foreach($clients as $client)
-                            <option value="{{ $client->id }}"
-                                    data-state="{{ $client->client_state }}"
-                                    {{ $invoice->client_id == $client->id ? 'selected' : '' }}>
-                                {{ $client->company_name ?? $client->user->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <div class="form_group">
+                        <label class="form-label">Client</label><br/>
+                        <select name="client_id" id="client_id" class="select" required>
+                            <option value="">Select Client</option>
+                            @foreach($clients as $client)
+                                <option value="{{ $client->id }}"
+                                        data-state="{{ $client->client_state }}"
+                                        {{ $invoice->client_id == $client->id ? 'selected' : '' }}>
+                                    {{ $client->company_name ?? $client->user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
 
             {{-- ITEMS --}}
-            <table class="table table-bordered" id="itemsTable">
+            <table class="data_table" id="itemsTable">
                 <thead class="table-light">
                     <tr>
                         <th>Item</th>
@@ -54,7 +69,7 @@
                     @foreach($invoice->items as $index => $row)
                     <tr data-discount-overridden="true">
                         <td>
-                            <select name="items[{{ $index }}][id]" class="form-control item-select" required>
+                            <select name="items[{{ $index }}][id]" class="textbox w-100 item-select" required>
                                 @foreach($items as $item)
                                     <option value="{{ $item->id }}"
                                         data-price="{{ $item->selling_price }}"
@@ -76,7 +91,7 @@
                         <td>
                             <input type="number"
                                 name="items[{{ $index }}][qty]"
-                                class="form-control qty"
+                                class="textbox w-100 qty"
                                 value="{{ $row->quantity }}"
                                 min="1">
                         </td>
@@ -84,14 +99,14 @@
                         <td>
                             <input type="number"
                                 name="items[{{ $index }}][price]"
-                                class="form-control price"
+                                class="textbox w-100 price"
                                 value="{{ $row->unit_price }}"
                                 readonly>
                         </td>
 
                         <td>
                             <select name="items[{{ $index }}][discount_type]"
-                                    class="form-control discount-type">
+                                    class="textbox w-100 discount-type">
                                 <option value="percent" {{ $row->discount_type === 'percent' ? 'selected' : '' }}>%</option>
                                 <option value="flat" {{ $row->discount_type === 'flat' ? 'selected' : '' }}>Flat</option>
                             </select>
@@ -100,44 +115,44 @@
                         <td>
                             <input type="number"
                                 name="items[{{ $index }}][discount_value]"
-                                class="form-control discount-value"
+                                class="textbox w-100 discount-value"
                                 value="{{ $row->discount_value }}"
                                 min="0" step="0.01" max="100">
                         </td>
 
                         <td>
                             <input type="text"
-                                class="form-control item-subtotal"
+                                class="textbox w-100 item-subtotal"
                                 value="{{ number_format($row->item_subtotal, 2) }}"
                                 readonly>
                         </td>
 
                         <td>
                             <input type="number"
-                                class="form-control gst_rate"
+                                class="textbox w-100 gst_rate"
                                 value="{{ $row->gst_rate }}"
                                 readonly>
                         </td>
 
-                        <td><input class="form-control cgst" value="{{ number_format($row->cgst, 2) }}" readonly></td>
-                        <td><input class="form-control sgst" value="{{ number_format($row->sgst, 2) }}" readonly></td>
-                        <td><input class="form-control igst" value="{{ number_format($row->igst, 2) }}" readonly></td>
+                        <td><input class="textbox w-100 cgst" value="{{ number_format($row->cgst, 2) }}" readonly></td>
+                        <td><input class="textbox w-100 sgst" value="{{ number_format($row->sgst, 2) }}" readonly></td>
+                        <td><input class="textbox w-100 igst" value="{{ number_format($row->igst, 2) }}" readonly></td>
 
                         <td>
-                            <input class="form-control total"
+                            <input class="textbox w-100 total"
                                 value="{{ number_format($row->total_price, 2) }}"
                                 readonly>
                         </td>
 
                         <td>
-                            <button type="button" class="btn btn-danger removeRow">×</button>
+                            <button type="button" class="btn text-danger removeRow">Remove</button>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
 
-            <button type="button" class="btn btn-sm btn-primary" id="addRow">
+            <button type="button" class="btn mt-3" id="addRow">
                 + Add Item
             </button>
 
@@ -149,40 +164,40 @@
                     <table class="table">
                         <tr>
                             <th>Subtotal</th>
-                            <td><input type="number" name="subtotal" id="subtotal" class="form-control" value="{{ $invoice->subtotal }}" readonly></td>
+                            <td><input type="number" name="subtotal" id="subtotal" class="textbox w-100" value="{{ $invoice->subtotal }}" readonly></td>
                         </tr>
                         <tr>
                             <th>CGST Total</th>
-                            <td><input type="number" name="cgst" id="cgst" class="form-control" value="{{ $invoice->cgst }}" readonly></td>
+                            <td><input type="number" name="cgst" id="cgst" class="textbox w-100" value="{{ $invoice->cgst }}" readonly></td>
                         </tr>
                         <tr>
                             <th>SGST Total</th>
-                            <td><input type="number" name="sgst" id="sgst" class="form-control" value="{{ $invoice->sgst }}" readonly></td>
+                            <td><input type="number" name="sgst" id="sgst" class="textbox w-100" value="{{ $invoice->sgst }}" readonly></td>
                         </tr>
                         <tr>
                             <th>IGST Total</th>
-                            <td><input type="number" name="igst" id="igst" class="form-control" value="{{ $invoice->igst }}" readonly></td>
+                            <td><input type="number" name="igst" id="igst" class="textbox w-100" value="{{ $invoice->igst }}" readonly></td>
                         </tr>
                         <tr>
                             <th>Discount</th>
-                            <td><input type="number" name="discount" id="discount" class="form-control" value="{{ $invoice->discount }}"></td>
+                            <td><input type="number" name="discount" id="discount" class="textbox w-100" value="{{ $invoice->discount }}"></td>
                         </tr>
                         <tr>
                             <th>Grand Total</th>
-                            <td><input type="number" name="grand_total" id="grand_total" class="form-control" value="{{ $invoice->grand_total }}" readonly></td>
+                            <td><input type="number" name="grand_total" id="grand_total" class="textbox w-100" value="{{ $invoice->grand_total }}" readonly></td>
                         </tr>
                     </table>
                 </div>
             </div>
-
+<div class="card-footer text-end">
+            <button type="submit" class="btn btn-theme">Update Invoice</button>
+        </div>
         </div>
 
-        <div class="card-footer text-end">
-            <button type="submit" class="btn btn-success">Update Invoice</button>
-        </div>
-    </form>
+        
+    
 </div>
-
+</form>
 @endsection
 
 @push('scripts')
@@ -337,7 +352,7 @@ $('#addRow').click(function () {
     $('#itemsTable tbody').append(`
         <tr>
             <td>
-                <select name="items[${rowIndex}][id]" class="form-control item-select" required>
+                <select name="items[${rowIndex}][id]" class="textbox w-100 item-select" required>
                     <option value="">Select Item</option>
                     @foreach($items as $item)
                         <option value="{{ $item->id }}"
@@ -352,22 +367,22 @@ $('#addRow').click(function () {
                 </select>
             </td>
             <td class="stock text-center">0</td>
-            <td><input type="number" name="items[${rowIndex}][qty]" class="form-control qty" min="1" value="1"></td>
-            <td><input type="number" name="items[${rowIndex}][price]" class="form-control price" readonly></td>
+            <td><input type="number" name="items[${rowIndex}][qty]" class="textbox w-100 qty" min="1" value="1"></td>
+            <td><input type="number" name="items[${rowIndex}][price]" class="textbox w-100 price" readonly></td>
             <td>
-                <select class="form-control discount-type" name="items[${rowIndex}][discount_type]">
+                <select class="textbox w-100 discount-type" name="items[${rowIndex}][discount_type]">
                     <option value="percent">%</option>
                     <option value="flat">Flat</option>
                 </select>
             </td>
-            <td><input type="number" class="form-control discount-value" name="items[${rowIndex}][discount_value]" value="0"></td>
-            <td><input type="text" class="form-control item-subtotal" readonly></td>
-            <td><input type="number" class="form-control gst_rate" readonly></td>
-            <td><input type="number" class="form-control cgst" readonly></td>
-            <td><input type="number" class="form-control sgst" readonly></td>
-            <td><input type="number" class="form-control igst" readonly></td>
-            <td><input type="number" class="form-control total" readonly></td>
-            <td><button type="button" class="btn btn-danger removeRow">×</button></td>
+            <td><input type="number" class="textbox w-100 discount-value" name="items[${rowIndex}][discount_value]" value="0"></td>
+            <td><input type="text" class="textbox w-100 item-subtotal" readonly></td>
+            <td><input type="number" class="textbox w-100 gst_rate" readonly></td>
+            <td><input type="number" class="textbox w-100 cgst" readonly></td>
+            <td><input type="number" class="textbox w-100 sgst" readonly></td>
+            <td><input type="number" class="textbox w-100 igst" readonly></td>
+            <td><input type="number" class="textbox w-100 total" readonly></td>
+            <td><button type="button" class="btn text-danger removeRow">Remove</button></td>
         </tr>
     `);
 });

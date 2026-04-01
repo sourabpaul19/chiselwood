@@ -120,9 +120,9 @@
             <div class="col-md-4">
                 <h6>Invoice Info</h6>
                 <p class="mb-1">Date: {{ $invoice->invoice_date }}</p>
-                <p class="mb-1">Tax Type:
+                {{--<p class="mb-1">Tax Type:
                     <strong>{{ $invoice->is_tax_inclusive ? 'Inclusive' : 'Exclusive' }}</strong>
-                </p>
+                </p>--}}
                 <p class="mb-1">Status:
                     <span class="badge bg-{{
                         $invoice->status == 'cancelled' ? 'dark' :

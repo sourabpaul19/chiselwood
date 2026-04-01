@@ -49,8 +49,15 @@
 
                     <div class="col-md-4">
                         <div class="form_group">
-                            <label class="form-label">Contact Details</label>
-                            <input name="contact_details" class="textbox w-100">
+                            <label class="form-label">Email</label>
+                            <input name="email" class="textbox w-100">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form_group">
+                            <label class="form-label">Phone</label>
+                            <input name="phone" class="textbox w-100">
                         </div>
                     </div>
 
@@ -76,17 +83,6 @@
                         <div class="form_group">
                             <label class="form-label">Budget Expectation</label>
                             <input name="budget_expectation" class="textbox w-100">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form_group">
-                            <label class="form-label">Project Type</label>
-                            <select name="project_type_id" class="textbox w-100">
-                                @foreach($projects as $p)
-                                <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 

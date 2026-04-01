@@ -35,8 +35,12 @@
                         <td>{{ $lead->name }}</td>
                     </tr>
                     <tr>
-                        <th>Contact Details</th>
-                        <td>{{ $lead->contact_details ?? '-' }}</td>
+                        <th>Email</th>
+                        <td>{{ $lead->email ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td>{{ $lead->phone ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>Lead Source</th>
@@ -58,10 +62,6 @@
                     <tr>
                         <th>Budget Expectation</th>
                         <td>{{ $lead->budget_expectation ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Project Type</th>
-                        <td>{{ $lead->type->name ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>Assign Staff</th>

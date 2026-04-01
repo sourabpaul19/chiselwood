@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Vendor;
+use App\Models\InventoryVendor;
 use App\Models\PurchaseOrderItem;
 
 class PurchaseOrder extends Model
@@ -31,7 +31,7 @@ class PurchaseOrder extends Model
 
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(InventoryVendor::class);
     }
     public function items()
     {

@@ -93,6 +93,28 @@
                 </ul>
             </li>
             <li>
+                <a href="{{ route('admin.documents.index') }}" class="menu_toggle">
+                    <figure>
+                        <!-- Projects Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 3H8V7H16V3Z"></path>
+                        </svg>
+                    </figure>
+                    <span>Documents Management</span>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </i>
+                </a>
+                <ul class="sub_menu">
+                    <li class="parent_menu"><a href="{{ route('admin.documents.index') }}">All Documents</a></li>
+                    <li><a href="{{ route('admin.documents.create') }}">Add New Documents</a></li>
+                    <li><a href="{{ route('admin.documents.signed') }}">Signed Documents</a></li>
+                </ul>
+            </li>
+            <li>
                 <a href="{{ route('admin.vendors.index') }}" class="menu_toggle">
                     <figure>
                         <!-- Vendors Icon -->
@@ -114,6 +136,30 @@
                     <li class="parent_menu"><a href="{{ route('admin.vendors.index') }}">All Vendors</a></li>
                     <li><a href="{{ route('admin.vendors.create') }}">Add New Vendor</a></li>
                     <li><a href="{{ route('admin.vendor-category.index') }}">Vendor Category</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ route('admin.inventory-vendors.index') }}" class="menu_toggle">
+                    <figure>
+                        <!-- Vendors Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                    </figure>
+                    <span>Inventory Vendor Management</span>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </i>
+                </a>
+                <ul class="sub_menu">
+                    <li class="parent_menu"><a href="{{ route('admin.inventory-vendors.index') }}">All Inventory Vendors</a></li>
+                    <li><a href="{{ route('admin.inventory-vendors.create') }}">Add New Inventory Vendor</a></li>
+                    <li><a href="{{ route('admin.inventory-vendor-category.index') }}">Inventory Vendor Category</a></li>
                 </ul>
             </li>
             <li>
@@ -211,6 +257,29 @@
                 <ul class="sub_menu">
                     <li class="parent_menu"><a href="{{ route('admin.invoices.index') }}">All Invoices</a></li>
                     <li><a href="{{ route('admin.invoices.create') }}">Add New Invoice</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ route('admin.service-invoices.index') }}" class="menu_toggle">
+                    <figure>
+                        <!-- Tasks Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </figure>
+                    <span>Service Invoice Management</span>
+                    <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </i>
+                </a>
+                <ul class="sub_menu">
+                    <li class="parent_menu"><a href="{{ route('admin.service-invoices.index') }}">All Service Invoices</a></li>
+                    <li><a href="{{ route('admin.service-invoices.create') }}">Add New Service Invoice</a></li>
                 </ul>
             </li>
             <li>
@@ -313,8 +382,8 @@
                 <img src="https://ui-avatars.com/api/?background=ffffff&color=000" />
             </figure>
             <figcaption>
-                <h5>Jhon Doe</h5>
-                <h6>jhon.doe@gmail.com</h6>
+                <h5>{{ auth()->user()->name }}</h5>
+                <h6>{{ auth()->user()->email }}</h6>
             </figcaption>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>

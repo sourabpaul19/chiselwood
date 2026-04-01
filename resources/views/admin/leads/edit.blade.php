@@ -68,9 +68,17 @@
 {{-- Contact --}}
 <div class="col-md-4">
     <div class="form_group">
-    <label class="form-label">Contact Details</label>
-    <input name="contact_details" class="textbox w-100"
-           value="{{ old('contact_details', $lead->contact_details) }}" required>
+    <label class="form-label">Email</label>
+    <input name="email" class="textbox w-100"
+           value="{{ old('email', $lead->email) }}" required>
+           </div>
+</div>
+
+<div class="col-md-4">
+    <div class="form_group">
+    <label class="form-label">Phone</label>
+    <input name="phone" class="textbox w-100"
+           value="{{ old('phone', $lead->phone) }}" required>
            </div>
 </div>
 
@@ -104,21 +112,6 @@
         <label class="form-label">Budget Expectation</label>
         <input name="budget_expectation" class="textbox w-100"
             value="{{ $lead->budget_expectation }}">
-    </div>
-</div>
-
-{{-- Project Type --}}
-<div class="col-md-4">
-    <div class="form_group">
-        <label class="form-label">Project Type</label>
-        <select name="project_type_id" class="textbox w-100">
-            @foreach($projects as $p)
-                <option value="{{ $p->id }}"
-                    {{ $lead->project_type_id == $p->id ? 'selected' : '' }}>
-                    {{ $p->name }}
-                </option>
-            @endforeach
-        </select>
     </div>
 </div>
 
